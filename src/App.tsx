@@ -1,12 +1,28 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import "./App.css";
+import useBookSearch from "./useBookSearch";
 
 function App() {
-	type ObjectType = {name?: string; phone: number; email: string; adult: boolean};
+  const [query, setQuery] = useState("");
+  const [pageNumber, setPageNumber] = useState(1);
+  const { books, hasMore, loading, error } = useBookSearch(query, pageNumber);
+  console.log(books);
 
-	let test: ObjectType = {name: "kim", phone: 123, email: "abc@naver.com", adult: false};
+  function handleSearch(e: any) {
+    setQuery(e.target.value);
+    setPageNumber(1);
+  }
+  return (
+    <>
+      <input type="text" onChange={handleSearch} />
 
-	return <div className="App"></div>;
+      {books.map((book: string) => {
+        return <div key={book}>{book}</div>;
+      })}
+      <div>{loading && "Loading..."}</div>
+      <div>{error && "Error"}</div>
+    </>
+  );
 }
 
 export default App;
