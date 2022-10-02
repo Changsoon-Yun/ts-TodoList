@@ -1,21 +1,25 @@
 import React, { useEffect, useState } from "react";
 
 function App() {
-  type Member = {
-    [key: string]: string;
-  };
-  let john: Member = { name: "kim", age: "23" };
-
-  console.log(john);
-
-  function a(x: number): number {
-    return x * 2;
+  function length(a: number | string): number {
+    return a.toString().length;
   }
-  console.log(a(2));
+
+  console.log(length("Asdf"));
+
   return (
-    <>
-      <div>typescript 기초</div>
-    </>
+    <div
+      style={{
+        width: "100vw",
+        height: "100vh",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        fontSize: "30px",
+      }}
+    >
+      <div>asd</div>
+    </div>
   );
 }
 
