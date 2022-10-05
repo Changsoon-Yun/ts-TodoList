@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from "react";
 
 function App() {
-  function length(a: number | string): number {
-    return a.toString().length;
-  }
+  type PositionX = { x: number };
+  type PositionY = { y: number };
 
-  console.log(length("Asdf"));
-  console.log("test");
+  type PositionXY = PositionX & PositionY;
+
+  let position: PositionXY = { x: 10, y: 10 };
+
+  console.log(position);
 
   return (
     <div
