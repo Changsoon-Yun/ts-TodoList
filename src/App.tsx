@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from "react";
 
 function App() {
+  type PositionX = { x: number };
+  type PositionY = { y: number };
 
 
-  let name:"kim"|"park";
+  type PositionXY = PositionX & PositionY;
 
-  name="kim"
-  name="park"
-
+  let position: PositionXY = { x: 10, y: 10 };
 
   return (
     <div
