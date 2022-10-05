@@ -6,6 +6,7 @@ function App() {
   }
 
   console.log(length("Asdf"));
+  console.log("test");
 
   return (
     <div
