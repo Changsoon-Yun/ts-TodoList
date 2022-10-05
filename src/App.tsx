@@ -2,14 +2,11 @@ import React, { useEffect, useState } from "react";
 
 function App() {
 
-  type PositionX= {x:number}
-  type PositionY ={y:number}
 
-  type PositionXY = PositionX & PositionY
+  let name:"kim"|"park";
 
-  let position :PositionXY = {x:10, y:10}
-
-  console.log(position)
+  name="kim"
+  name="park"
 
 
   return (
