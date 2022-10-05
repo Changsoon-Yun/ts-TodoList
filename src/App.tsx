@@ -8,6 +8,8 @@ function App() {
 
   let position: PositionXY = { x: 10, y: 10 };
 
+  console.log(position);
+
   return (
     <div
       style={{
