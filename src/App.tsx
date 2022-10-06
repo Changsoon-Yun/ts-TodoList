@@ -4,6 +4,7 @@ function App() {
   type PositionX = { x: number };
   type PositionY = { y: number };
 
+
   type PositionXY = PositionX & PositionY;
 
   let position: PositionXY = { x: 10, y: 10 };
