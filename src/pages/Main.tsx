@@ -11,7 +11,7 @@ import {
 } from "react-query";
 
 const Main = () => {
-  const todoInput = useRef<any>(null);
+  const todoInput = useRef<HTMLInputElement>(null);
 
   const queryClient = useQueryClient();
 
@@ -30,28 +30,36 @@ const Main = () => {
     }
   );
 
-  const mutation = useMutation(
+  const addTodoQuery = useMutation(
     "addTodos",
-    (data: any) => instance.post("/todos", data),
+    (data: { title: string | undefined }) => instance.post("/todos", data),
     {
       onSuccess: (data, variables, context) => {
-        console.log("onSuccess", data);
         queryClient.invalidateQueries("get/todos");
       },
     }
   );
 
-  useEffect(() => {
-    console.log(status);
-  }, [status]);
+  const deleteTodoQuery = useMutation(
+    "deleteTodos",
+    (data: any) => instance.delete(`/todos/${data}`),
+    {
+      onSuccess: (data) => {
+        queryClient.invalidateQueries("get/todos");
+      },
+    }
+  );
 
-  // console.log(query.data?.data[0]);
-
-  const addTodoList = (value: string): void => {
-    mutation.mutate({ title: value });
+  const addTodoList = (): void => {
+    if (todoInput?.current?.value?.length < 1) {
+      console.log("hello");
+    }
+    addTodoQuery.mutate({ title: todoInput?.current?.value });
   };
 
-  console.log();
+  const deleteTodoList = (id: number): void => {
+    deleteTodoQuery.mutate(id);
+  };
 
   return (
     <div>
@@ -59,7 +67,17 @@ const Main = () => {
         <h2>오늘 할일</h2>
         <p>10월 9일 일요일</p>
         {data?.data.map((data: { title: string; id: number }) => (
-          <div key={data.id}>{data.title}</div>
+          <div key={data.id} className="flex">
+            <div className="bg-black text-white mr-5 p-2">{data.title}</div>
+            <button
+              onClick={() => {
+                deleteTodoList(data.id);
+              }}
+              className="border border-black p-2"
+            >
+              삭제하기
+            </button>
+          </div>
         ))}
       </div>
       <div className="mt-5 flex flex-col w-1/2">
@@ -68,9 +86,7 @@ const Main = () => {
           ref={todoInput}
           type="text"
         />
-        <button onClick={() => addTodoList(todoInput.current.value)}>
-          리패치
-        </button>
+        <button onClick={addTodoList}>추가하기</button>
       </div>
     </div>
   );
