@@ -51,7 +51,10 @@ const Main = () => {
   );
 
   const addTodoList = (): void => {
-    if (todoInput?.current?.value?.length < 1) {
+    if (
+      todoInput?.current?.value !== undefined &&
+      todoInput?.current?.value?.length < 1
+    ) {
       console.log("hello");
     }
     addTodoQuery.mutate({ title: todoInput?.current?.value });
@@ -62,8 +65,8 @@ const Main = () => {
   };
 
   return (
-    <div>
-      <div>
+    <div className="relative h-full flex flex-col">
+      <div className="flex-1">
         <h2>오늘 할일</h2>
         <p>10월 9일 일요일</p>
         {data?.data.map((data: { title: string; id: number }) => (
@@ -80,13 +83,15 @@ const Main = () => {
           </div>
         ))}
       </div>
-      <div className="mt-5 flex flex-col w-1/2">
+      <div className="flex flex-col w-full absolute bottom-0">
         <input
           className="border border-black border-solid h-10 p-2"
           ref={todoInput}
           type="text"
         />
-        <button onClick={addTodoList}>추가하기</button>
+        <button className="" onClick={addTodoList}>
+          추가하기
+        </button>
       </div>
     </div>
   );
