@@ -15,14 +15,12 @@ const Main = () => {
 
   const queryClient = useQueryClient();
 
-  // const query = useQuery("todos", todosApi.getTodoList);
-
-  const { status, refetch, isFetching, data, error } = useQuery(
+  const { data: todoLists } = useQuery(
     "get/todos",
     () => instance.get("/todos"),
     {
-      onSuccess: (data) => {
-        console.log("onSuccess", data);
+      onSuccess: (todoLists) => {
+        console.log("onSuccess", todoLists);
       },
       onError: (error) => {
         console.log("onError", error);
@@ -52,8 +50,8 @@ const Main = () => {
 
   const addTodoList = (): void => {
     if (
-      todoInput?.current?.value !== undefined &&
-      todoInput?.current?.value?.length < 1
+      todoInput.current?.value !== undefined &&
+      todoInput.current?.value?.length < 1
     ) {
       console.log("hello");
     }
@@ -69,7 +67,7 @@ const Main = () => {
       <div className="flex-1">
         <h2>오늘 할일</h2>
         <p>10월 9일 일요일</p>
-        {data?.data.map((data: { title: string; id: number }) => (
+        {todoLists?.data.map((data: { title: string; id: number }) => (
           <div key={data.id} className="flex">
             <div className="bg-black text-white mr-5 p-2">{data.title}</div>
             <button
