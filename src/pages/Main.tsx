@@ -6,8 +6,8 @@ import {
   useQuery,
   useMutation,
   useQueryClient,
-  QueryClient,
-  QueryClientProvider,
+  // QueryClient,
+  // QueryClientProvider,
 } from "react-query";
 
 const Main = () => {
