@@ -1,61 +1,88 @@
 import { Input } from "postcss";
 import React, { useRef, useState } from "react";
+import Header from "./../common/Header";
+import TodoButton from "./TodoButton";
 
 const TodoList = ({
   data,
   deleteTodoList,
   updateTodoList,
+  doneUpdateTodoList,
 }: {
-  data: { title: string; id: number };
+  data: { title: string; id: number; date: string; done: boolean };
   deleteTodoList: (id: number) => void;
-  updateTodoList: (data: { title: string; id: number }) => void;
+  updateTodoList: (data: {
+    title: string;
+    id: number;
+    date: string;
+    done: boolean;
+  }) => void;
+  doneUpdateTodoList: (data: {
+    title: string;
+    id: number;
+    date: string;
+    done: boolean;
+  }) => void;
 }) => {
   const textArea_ref = useRef() as React.MutableRefObject<HTMLTextAreaElement>;
   const [edit, setEdit] = useState<boolean>(false);
   const [text, Text] = useState(data.title);
   return (
-    <div className="flex rounded-md bg-white m-2 p-2 items-center">
-      {edit ? (
-        <textarea
-          className="flex-1"
-          value={text}
-          onChange={(e) => {
-            Text(e.target.value);
-          }}
-          ref={textArea_ref}
-        ></textarea>
-      ) : (
-        <div className="flex-1">{data.title}</div>
+    <>
+      {!data.done && (
+        <div className="flex rounded-md bg-white m-2 p-2 items-center">
+          {edit ? (
+            <textarea
+              className="flex-1"
+              value={text}
+              onChange={(e) => {
+                Text(e.target.value);
+              }}
+              ref={textArea_ref}
+            />
+          ) : (
+            <div className="flex-1">{data.title}</div>
+          )}
+          {!edit && (
+            <TodoButton
+              text={"완료하기"}
+              onClick={() => {
+                doneUpdateTodoList({
+                  title: data.title,
+                  id: data.id,
+                  date: data.date,
+                  done: true,
+                });
+              }}
+            />
+          )}
+          <TodoButton
+            text={"삭제하기"}
+            onClick={() => {
+              deleteTodoList(data.id);
+            }}
+          />
+          <TodoButton
+            text={edit ? "수정완료" : "수정하기"}
+            onClick={
+              edit
+                ? () => {
+                    updateTodoList({
+                      title: textArea_ref.current.value,
+                      id: data.id,
+                      date: data.date,
+                      done: data.done,
+                    });
+                    setEdit(false);
+                  }
+                : () => {
+                    setEdit(true);
+                  }
+            }
+          />
+        </div>
       )}
-      <button
-        onClick={() => {
-          deleteTodoList(data.id);
-        }}
-        className="border border-black p-2"
-      >
-        삭제하기
-      </button>
-      {edit ? (
-        <button
-          onClick={() => {
-            updateTodoList({ title: textArea_ref.current.value, id: data.id });
-            setEdit(false);
-          }}
-          className="border border-black p-2"
-        >
-          수정완료
-        </button>
-      ) : (
-        <button
-          onClick={() => {
-            setEdit(true);
-          }}
-          className="border border-black p-2"
-        >
-          수정하기
-        </button>
-      )}
-    </div>
+    </>
   );
 };
 

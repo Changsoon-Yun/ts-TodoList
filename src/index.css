@@ -131,7 +131,7 @@ table {
   border-spacing: 0;
 }
 
-.main-todo {
+.main {
   background-image: url("https://source.unsplash.com/random");
   background-repeat: no-repeat;
   background-size: cover;
