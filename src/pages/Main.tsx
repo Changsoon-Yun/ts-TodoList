@@ -9,6 +9,7 @@ import {
   // QueryClient,
   // QueryClientProvider,
 } from "react-query";
+import TodoList from "../components/todo/TodoList";
 
 const Main = () => {
   const todoInput = useRef<HTMLInputElement>(null);
@@ -30,7 +31,8 @@ const Main = () => {
 
   const addTodoQuery = useMutation(
     "addTodos",
-    (data: { title: string | undefined }) => instance.post("/todos", data),
+    (data: { title: string | undefined; date: string }) =>
+      instance.post("/todos", data),
     {
       onSuccess: (data, variables, context) => {
         queryClient.invalidateQueries("get/todos");
@@ -40,7 +42,18 @@ const Main = () => {
 
   const deleteTodoQuery = useMutation(
     "deleteTodos",
-    (data: any) => instance.delete(`/todos/${data}`),
+    (data: number) => instance.delete(`/todos/${data}`),
+    {
+      onSuccess: (data) => {
+        queryClient.invalidateQueries("get/todos");
+      },
+    }
+  );
+
+  const updateTodoQuery = useMutation(
+    "updateTodos",
+    (data: { title: string; id: number }) =>
+      instance.patch(`/todos/${data.id}`, data),
     {
       onSuccess: (data) => {
         queryClient.invalidateQueries("get/todos");
@@ -53,41 +66,44 @@ const Main = () => {
       todoInput.current?.value !== undefined &&
       todoInput.current?.value?.length < 1
     ) {
-      console.log("hello");
+      alert("빈칸입니다");
+      return;
     }
-    addTodoQuery.mutate({ title: todoInput?.current?.value });
+    addTodoQuery.mutate({
+      title: todoInput.current?.value,
+      date: "2022-10-23",
+    });
   };
 
   const deleteTodoList = (id: number): void => {
     deleteTodoQuery.mutate(id);
   };
 
+  const updateTodoList = (data: { title: string; id: number }) => {
+    updateTodoQuery.mutate(data);
+  };
+
   return (
-    <div className="relative h-full flex flex-col">
+    <div className="main-todo relative h-full flex flex-col">
       <div className="flex-1">
         <h2>오늘 할일</h2>
         <p>10월 9일 일요일</p>
         {todoLists?.data.map((data: { title: string; id: number }) => (
-          <div key={data.id} className="flex">
-            <div className="bg-black text-white mr-5 p-2">{data.title}</div>
-            <button
-              onClick={() => {
-                deleteTodoList(data.id);
-              }}
-              className="border border-black p-2"
-            >
-              삭제하기
-            </button>
-          </div>
+          <TodoList
+            key={data.id}
+            data={data}
+            deleteTodoList={deleteTodoList}
+            updateTodoList={updateTodoList}
+          />
         ))}
       </div>
-      <div className="flex flex-col w-full absolute bottom-0">
+      <div className="flex w-full absolute bottom-0 bg-white">
         <input
-          className="border border-black border-solid h-10 p-2"
+          className="flex-1 border border-black border-solid h-10 p-2"
           ref={todoInput}
           type="text"
         />
-        <button className="" onClick={addTodoList}>
+        <button className="border border-black p-2" onClick={addTodoList}>
           추가하기
         </button>
       </div>

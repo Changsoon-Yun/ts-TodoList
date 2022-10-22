@@ -130,3 +130,9 @@ table {
   border-collapse: collapse;
   border-spacing: 0;
 }
+
+.main-todo {
+  background-image: url("https://source.unsplash.com/random");
+  background-repeat: no-repeat;
+  background-size: cover;
+}
