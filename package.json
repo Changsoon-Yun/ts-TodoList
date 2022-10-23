@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@react-query-firebase/firestore": "^1.0.0-dev.7",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.3.0",
     "@testing-library/user-event": "^13.5.0",
@@ -15,6 +16,7 @@
     "autoprefixer": "^10.4.12",
     "axios": "^0.27.2",
     "dayjs": "^1.11.5",
+    "firebase": "^9.12.1",
     "json-server": "^0.17.0",
     "postcss": "^8.4.17",
     "postcss-loader": "^7.0.1",

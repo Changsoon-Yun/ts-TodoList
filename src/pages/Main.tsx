@@ -1,6 +1,6 @@
 import axios from "axios";
+import { db } from "../firebase";
 import React, { useEffect, useRef, useState } from "react";
-import { todosApi } from "./../hooks/todosApi";
 import instance from "./../hooks/axios";
 import {
   useQuery,
@@ -19,6 +19,22 @@ const Main = () => {
   const todoInput = useRef() as React.MutableRefObject<HTMLInputElement>;
   const queryClient = useQueryClient();
   const navigate = useNavigate();
+
+  // const { isLoading, data: todoLists } = useQuery(
+  //   "get/todos",
+  //   () => {
+  //     getDocs(collection(db, "todoList")).then((res) => console.log(res));
+  //   },
+  //   {
+  //     staleTime: 20000,
+  //     onSuccess: (todoLists) => {
+  //       console.log("onSuccess", todoLists);
+  //     },
+  //     onError: (error) => {
+  //       console.log("onError", error);
+  //     },
+  //   }
+  // );
 
   const { isLoading, data: todoLists } = useQuery(
     "get/todos",
@@ -111,7 +127,6 @@ const Main = () => {
   };
 
   let now = dayjs();
-
   return (
     <div className="main-todo relative h-full flex flex-col">
       <Header
